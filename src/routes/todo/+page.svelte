@@ -45,7 +45,7 @@
   </div>
   
   <div class="my-4">
-    <TodoTable {todo} />
+    <TodoTable todo={todo} />
 
     <div class="my-4">
       <ul class="list-disc">
