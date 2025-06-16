@@ -2,6 +2,7 @@ import { Telegraf } from 'telegraf'
 import { message } from 'telegraf/filters'
 import type { Update } from '@telegraf/types'
 import { createClient } from '@supabase/supabase-js'
+import type { PagesFunction, Response as CFResponse } from '@cloudflare/workers-types'
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_API_KEY || '')
 const supabase = createClient(
@@ -114,13 +115,13 @@ bot.command(['addPoints', 'deductPoints'], async (ctx) => {
 })
 
 // Handle webhook (Cloudflare Pages Functions)
-export const onRequestPost: PagesFunction = async (context) => {
+export const onRequestPost: PagesFunction = async (context): Promise<CFResponse> => {
   try {
-    const update = (await context.request.json()) as Update
+    const update = await context.request.json() as Update
     await bot.handleUpdate(update)
-    return new Response('ok', { status: 200 })
+    return new Response('ok', { status: 200 }) as unknown as CFResponse
   } catch (err) {
     console.error('Bot error:', err)
-    return new Response('Bot error', { status: 500 })
+    return new Response('Bot error', { status: 500 }) as unknown as CFResponse
   }
 }
