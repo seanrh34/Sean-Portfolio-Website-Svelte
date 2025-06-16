@@ -2,13 +2,11 @@ import { Telegraf } from 'telegraf'
 import { message } from 'telegraf/filters'
 import type { Update } from '@telegraf/types'
 import { createClient } from '@supabase/supabase-js'
-import { TELEGRAM_BOT_API_KEY } from '$env/static/private'
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 
-const bot = new Telegraf(TELEGRAM_BOT_API_KEY)
+const bot = new Telegraf(process.env.TELEGRAM_BOT_API_KEY || '')
 const supabase = createClient(
-  PUBLIC_SUPABASE_URL,
-  PUBLIC_SUPABASE_ANON_KEY
+  process.env.PUBLIC_SUPABASE_URL || '',
+  process.env.PUBLIC_SUPABASE_ANON_KEY || ''
 )
 
 // Reply with help text
